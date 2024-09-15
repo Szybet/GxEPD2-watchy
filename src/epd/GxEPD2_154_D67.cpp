@@ -359,7 +359,28 @@ void GxEPD2_154_D67::_InitDisplay()
 void GxEPD2_154_D67::_Update_Full()
 {
   _writeCommand(0x22);
+  #if SCREEN_PARTIAL_GREY_WORKAROUND
+  // The work arround
+  _writeData(0xf5);
+  /*
+  0xf5 = 11110101
+  oxf7 = 11110111
+  This one bit, as slabeb said:
+
+  slabeb
+  — 
+  well the difference between 0xf4 and 0xf5 is that now the clock is being disabled (whatever the "clock" is) after full updates
+  maybe that resets something and gets it into a known state next time you do e.g. 0xfc, which includes a command to enable the clock anyways
+  
+  Szybet
+  — 
+  it would make sense if it would work forever like that
+  not after a framework update
+  */
+  #else
+  // This is how it's normal
   _writeData(0xf7);
+  #endif
   _writeCommand(0x20);
   _waitWhileBusy("_Update_Full", full_refresh_time);
   _power_is_on = false;
