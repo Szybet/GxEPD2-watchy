@@ -226,6 +226,7 @@ class GxEPD2_BW : public GxEPD2_GFX_BASE_CLASS
 {
   public:
     GxEPD2_Type epd2;
+    uint8_t _buffer[(GxEPD2_Type::WIDTH / 8) * page_height]; // For watchy-scom
 #if ENABLE_GxEPD2_GFX
     GxEPD2_BW(GxEPD2_Type epd2_instance) : GxEPD2_GFX_BASE_CLASS(epd2, GxEPD2_Type::WIDTH_VISIBLE, GxEPD2_Type::HEIGHT), epd2(epd2_instance)
 #else
@@ -745,7 +746,6 @@ class GxEPD2_BW : public GxEPD2_GFX_BASE_CLASS
       }
     }
   private:
-    uint8_t _buffer[(GxEPD2_Type::WIDTH / 8) * page_height];
     bool _using_partial_mode, _second_phase, _mirror, _reverse;
     uint16_t _width_bytes, _pixel_bytes;
     int16_t _current_page;
